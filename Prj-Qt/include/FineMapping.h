@@ -18,8 +18,17 @@ private:
 
 public:
     FineMapping();
-    FineMapping(std::string prototxt,std::string caffemodel);
+    FineMapping(std::string prototxt, std::string caffemodel);
 
+    /**
+     * @brief FineMappingVertical 获得车牌上下边界
+     * @param InputProposal
+     * @param sliceNum
+     * @param upper
+     * @param lower
+     * @param windows_size
+     * @return 剪切后的车牌图像
+     */
     static cv::Mat FineMappingVertical(cv::Mat InputProposal,
                                        int sliceNum=15,
                                        int upper=0, int lower=-50,
