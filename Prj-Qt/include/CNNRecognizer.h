@@ -6,7 +6,9 @@
 #define SWIFTPR_CNNRECOGNIZER_H
 
 #include "include/Recognizer.h"
-namespace pr{
+
+namespace pr {
+
     class CNNRecognizer: public GeneralRecognizer{
     public:
         const int CHAR_INPUT_W = 14;

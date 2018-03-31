@@ -7,7 +7,8 @@
 
 #include <math.h>
 #include <opencv2/opencv.hpp>
-namespace pr{
+
+namespace pr {
 
     cv::Mat fastdeskew(cv::Mat skewImage,int blockSize);
 //    cv::Mat spatialTransformer(cv::Mat skewImage);

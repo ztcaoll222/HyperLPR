@@ -1,7 +1,6 @@
 //
 // Created by 庾金科 on 16/10/2017.
 //
-
 #ifndef SWIFTPR_PLATESEGMENTATION_H
 #define SWIFTPR_PLATESEGMENTATION_H
 
@@ -10,7 +9,6 @@
 #include "include/PlateInfo.h"
 
 namespace pr{
-
 
     class PlateSegmentation{
     public:

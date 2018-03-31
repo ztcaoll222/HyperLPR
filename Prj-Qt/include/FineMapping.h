@@ -9,24 +9,26 @@
 #include <opencv2/dnn.hpp>
 
 #include <string>
-namespace pr{
-    class FineMapping{
-    public:
-        FineMapping();
 
+namespace pr {
 
-        FineMapping(std::string prototxt,std::string caffemodel);
-        static cv::Mat FineMappingVertical(cv::Mat InputProposal,int sliceNum=15,int upper=0,int lower=-50,int windows_size=17);
-        cv::Mat FineMappingHorizon(cv::Mat FinedVertical,int leftPadding,int rightPadding);
+class FineMapping{
+private:
+    cv::dnn::Net net;
 
+public:
+    FineMapping();
+    FineMapping(std::string prototxt,std::string caffemodel);
 
-    private:
-        cv::dnn::Net net;
+    static cv::Mat FineMappingVertical(cv::Mat InputProposal,
+                                       int sliceNum=15,
+                                       int upper=0, int lower=-50,
+                                       int windows_size=17);
 
-    };
+    cv::Mat FineMappingHorizon(cv::Mat FinedVertical,
+                               int leftPadding, int rightPadding);
 
-
-
+};
 
 }
 #endif //SWIFTPR_FINEMAPPING_H

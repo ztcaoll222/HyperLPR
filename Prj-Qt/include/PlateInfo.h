@@ -1,11 +1,11 @@
 //
 // Created by 庾金科 on 20/09/2017.
 //
-
 #ifndef SWIFTPR_PLATEINFO_H
 #define SWIFTPR_PLATEINFO_H
 
 #include <opencv2/opencv.hpp>
+
 namespace pr {
 
     typedef std::vector<cv::Mat> Character;
