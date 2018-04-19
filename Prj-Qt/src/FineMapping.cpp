@@ -95,7 +95,7 @@ cv::Mat FineMapping::FineMappingVertical(cv::Mat InputProposal, int sliceNum, in
         float k = lower + i * diff;
 
         cv::adaptiveThreshold(proposal, binary_adaptive, 255, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, windows_size, k);
-//        util::showMat(binary_adaptive);
+        util::showMat(binary_adaptive);
         cv::findContours(binary_adaptive, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 
         for(auto contour : contours) {

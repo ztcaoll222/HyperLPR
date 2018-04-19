@@ -70,17 +70,18 @@ float computeSimilir(const cv::Mat &A, const cv::Mat &B)
     return cv::compareHist(histA,histB,CV_COMP_CORREL);
 }
 
-void showMat(cv::Mat image, cv::Rect plate)
+void showMat(cv::Mat image, cv::Rect plate, std::string name)
 {
-    // 在图片上画一个蓝色框
+    // 蓝色方框
     cv::rectangle(image, cv::Point(plate.x, plate.y), cv::Point(plate.x + plate.width, plate.y + plate.height), cv::Scalar(255, 255, 0), 2);
-    cv::imshow("input", image);
+
+    cv::imshow(name, image);
     cv::waitKey(0);
 }
 
-void showMat(cv::Mat image)
+void showMat(cv::Mat image, std::string name)
 {
-    cv::imshow("input", image);
+    cv::imshow(name, image);
     cv::waitKey(0);
 }
 

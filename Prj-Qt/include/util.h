@@ -24,14 +24,16 @@ float computeSimilir(const cv::Mat &A,const cv::Mat &B);
  * @brief showMat 显示图像并在对应位置画框
  * @param image 图像
  * @param plate 位置
+ * @param name 窗口名字
  */
-void showMat(cv::Mat image, cv::Rect plate);
+void showMat(cv::Mat image, cv::Rect plate, std::string name="Image");
 
 /**
  * @brief showMat 显示图像
  * @param image 图像
+ * @param name 窗口名字
  */
-void showMat(cv::Mat image);
+void showMat(cv::Mat image, std::string name="Image");
 
 } //namespace util
 #endif //SWIFTPR_UTIL_H

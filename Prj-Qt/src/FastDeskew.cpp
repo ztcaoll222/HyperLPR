@@ -98,17 +98,16 @@ cv::Mat fastdeskew(cv::Mat skewImage, int blockSize) {
     }
 
     if(skewImage.channels() == 1) {
+        // 特征
         cv::Mat eigen;
 
-        cv::cornerEigenValsAndVecs(skewImage,eigen,blockSize,5);
-        for( int j = 0; j < skewImage.rows; j+=blockSize )
-        { for( int i = 0; i < skewImage.cols; i+=blockSize )
-            {
+        cv::cornerEigenValsAndVecs(skewImage, eigen, blockSize, 5);
+        for(int j = 0; j < skewImage.rows; j += blockSize ) {
+            for( int i = 0; i < skewImage.cols; i+=blockSize ) {
                 float x2 = eigen.at<cv::Vec6f>(j, i)[4];
                 float y2 = eigen.at<cv::Vec6f>(j, i)[5];
                 int angle_cell = angle(x2,y2);
                 angle_list[(angle_cell + 180)%180]+=1.0;
-
             }
         }
     }

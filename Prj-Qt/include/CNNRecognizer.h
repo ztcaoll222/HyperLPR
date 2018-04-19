@@ -6,6 +6,7 @@
 #define SWIFTPR_CNNRECOGNIZER_H
 
 #include "include/Recognizer.h"
+#include "util.h"
 
 namespace pr {
 

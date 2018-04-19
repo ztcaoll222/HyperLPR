@@ -26,26 +26,35 @@ std::vector<pr::PlateInfo> PipelinePR::RunPiplineAsImage(cv::Mat plateImage) {
 
     for (pr::PlateInfo plateinfo : plates) {
         cv::Mat image_finemapping = plateinfo.getPlateImage();
+//        util::showMat(image_finemapping);
 
         // 去掉车牌上下多余的像素
         image_finemapping = fineMapping->FineMappingVertical(image_finemapping);
-        util::showMat(image_finemapping);
+//        util::showMat(image_finemapping);
 
         // 扭正车牌
         image_finemapping = pr::fastdeskew(image_finemapping, 5);
-        util::showMat(image_finemapping);
+//        util::showMat(image_finemapping);
 
+        // 去掉车牌左右多余的像素
         image_finemapping = fineMapping->FineMappingHorizon(image_finemapping, 2, 5);
+//        util::showMat(image_finemapping);
+
+        // 调整大小
         cv::resize(image_finemapping, image_finemapping, cv::Size(136, 36));
+
+        // 分割
         plateinfo.setPlateImage(image_finemapping);
         std::vector<cv::Rect> rects;
         plateSegmentation->segmentPlatePipline(plateinfo, 1, rects);
         plateSegmentation->ExtractRegions(plateinfo, rects);
         cv::copyMakeBorder(image_finemapping, image_finemapping, 0, 0, 0, 20, cv::BORDER_REPLICATE);
+//        util::showMat(image_finemapping);
 
+        // 识别
         plateinfo.setPlateImage(image_finemapping);
         generalRecognizer->SegmentBasedSequenceRecognition(plateinfo);
-        plateinfo.decodePlateNormal(chars_code);
+        plateinfo.decodePlateNormal(CHAR_CODE);
         results.push_back(plateinfo);
     }
 

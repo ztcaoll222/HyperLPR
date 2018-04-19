@@ -7,8 +7,9 @@
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/dnn.hpp>
-
 #include <string>
+
+#include "util.h"
 
 namespace pr {
 
@@ -22,7 +23,7 @@ public:
 
     /**
      * @brief FineMappingVertical 获得车牌上下边界
-     * @param InputProposal
+     * @param InputProposal 车牌图片
      * @param sliceNum
      * @param upper
      * @param lower
