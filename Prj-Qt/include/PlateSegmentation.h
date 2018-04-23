@@ -7,7 +7,7 @@
 #include "opencv2/opencv.hpp"
 #include <opencv2/dnn.hpp>
 
-#include "include/PlateInfo.h"
+#include "PlateInfo.h"
 #include "util.h"
 
 namespace pr{

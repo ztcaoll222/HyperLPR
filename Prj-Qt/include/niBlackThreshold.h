@@ -10,16 +10,15 @@
 
 using namespace cv;
 
-enum LocalBinarizationMethods{
+enum LocalBinarizationMethods {
     BINARIZATION_NIBLACK = 0, //!< Classic Niblack binarization. See @cite Niblack1985 .
     BINARIZATION_SAUVOLA = 1, //!< Sauvola's technique. See @cite Sauvola1997 .
     BINARIZATION_WOLF = 2,    //!< Wolf's technique. See @cite Wolf2004 .
     BINARIZATION_NICK = 3     //!< NICK technique. See @cite Khurshid2009 .
 };
 
-void niBlackThreshold( InputArray _src, OutputArray _dst, double maxValue,
-                       int type, int blockSize, double k, int binarizationMethod )
-{
+void niBlackThreshold(InputArray _src, OutputArray _dst, double maxValue,
+                      int type, int blockSize, double k, int binarizationMethod) {
     // Input grayscale image
     Mat src = _src.getMat();
     CV_Assert(src.channels() == 1);
@@ -38,13 +37,12 @@ void niBlackThreshold( InputArray _src, OutputArray _dst, double maxValue,
         Mat mean, sqmean, variance, stddev, sqrtVarianceMeanSum;
         double srcMin, stddevMax;
         boxFilter(src, mean, CV_32F, Size(blockSize, blockSize),
-                  Point(-1,-1), true, BORDER_REPLICATE);
+                  Point(-1, -1), true, BORDER_REPLICATE);
         sqrBoxFilter(src, sqmean, CV_32F, Size(blockSize, blockSize),
-                     Point(-1,-1), true, BORDER_REPLICATE);
+                     Point(-1, -1), true, BORDER_REPLICATE);
         variance = sqmean - mean.mul(mean);
         sqrt(variance, stddev);
-        switch (binarizationMethod)
-        {
+        switch (binarizationMethod) {
             case BINARIZATION_NIBLACK:
                 thresh = mean + stddev * static_cast<float>(k);
 
@@ -53,16 +51,17 @@ void niBlackThreshold( InputArray _src, OutputArray _dst, double maxValue,
                 thresh = mean.mul(1. + static_cast<float>(k) * (stddev / 128.0 - 1.));
                 break;
             case BINARIZATION_WOLF:
-                minMaxIdx(src, &srcMin,NULL);
+                minMaxIdx(src, &srcMin, NULL);
                 minMaxIdx(stddev, NULL, &stddevMax);
-                thresh = mean - static_cast<float>(k) * (mean - srcMin - stddev.mul(mean - srcMin) / stddevMax);
+                thresh = mean - static_cast<float>(k) *
+                                (mean - srcMin - stddev.mul(mean - srcMin) / stddevMax);
                 break;
             case BINARIZATION_NICK:
                 sqrt(variance + sqmean, sqrtVarianceMeanSum);
                 thresh = mean + static_cast<float>(k) * sqrtVarianceMeanSum;
                 break;
             default:
-                CV_Error( CV_StsBadArg, "Unknown binarization method" );
+                CV_Error(CV_StsBadArg, "Unknown binarization method");
                 break;
         }
         thresh.convertTo(thresh, src.depth());
@@ -79,8 +78,7 @@ void niBlackThreshold( InputArray _src, OutputArray _dst, double maxValue,
     CV_Assert(src.data != dst.data);  // no inplace processing
     // Apply thresholding: ( pixel > threshold ) ? foreground : background
     Mat mask;
-    switch (type)
-    {
+    switch (type) {
         case THRESH_BINARY:      // dst = (src > thresh) ? maxval : 0
         case THRESH_BINARY_INV:  // dst = (src > thresh) ? 0 : maxval
             compare(src, thresh, mask, (type == THRESH_BINARY ? CMP_GT : CMP_LE));
@@ -99,7 +97,7 @@ void niBlackThreshold( InputArray _src, OutputArray _dst, double maxValue,
             src.copyTo(dst, mask);
             break;
         default:
-            CV_Error( CV_StsBadArg, "Unknown threshold type" );
+            CV_Error(CV_StsBadArg, "Unknown threshold type");
             break;
     }
 }

@@ -8,7 +8,7 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 
-#include "include/PlateInfo.h"
+#include "PlateInfo.h"
 #include "util.h"
 
 namespace pr{

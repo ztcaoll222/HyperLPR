@@ -4,13 +4,13 @@
 #ifndef SWIFTPR_PIPLINE_H
 #define SWIFTPR_PIPLINE_H
 
-#include "include/PlateDetection.h"
-#include "include/PlateSegmentation.h"
-#include "include/CNNRecognizer.h"
-#include "include/PlateInfo.h"
-#include "include/FastDeskew.h"
-#include "include/FineMapping.h"
-#include "include/Recognizer.h"
+#include "PlateDetection.h"
+#include "PlateSegmentation.h"
+#include "CNNRecognizer.h"
+#include "PlateInfo.h"
+#include "FastDeskew.h"
+#include "FineMapping.h"
+#include "Recognizer.h"
 #include "util.h"
 
 namespace pr{

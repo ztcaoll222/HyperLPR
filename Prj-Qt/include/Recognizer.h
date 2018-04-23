@@ -4,8 +4,9 @@
 #ifndef SWIFTPR_RECOGNIZER_H
 #define SWIFTPR_RECOGNIZER_H
 
-#include "include/PlateInfo.h"
 #include "opencv2/dnn.hpp"
+
+#include "PlateInfo.h"
 #include "util.h"
 
 namespace pr{
