@@ -1,6 +1,6 @@
-//
-// Created by 庾金科 on 04/04/2017.
-//
+/**
+ * 工具类
+ */
 #ifndef SWIFTPR_UTIL_H
 #define SWIFTPR_UTIL_H
 
@@ -34,6 +34,13 @@ void showMat(cv::Mat image, cv::Rect plate, std::string name="Image");
  * @param name 窗口名字
  */
 void showMat(cv::Mat image, std::string name="Image");
+
+/**
+ * @brief drawRect 在图片上画框
+ * @param image 图片
+ * @param rect 矩形框
+ */
+void drawRect(cv::Mat image,cv::Rect rect);
 
 } //namespace util
 #endif //SWIFTPR_UTIL_H

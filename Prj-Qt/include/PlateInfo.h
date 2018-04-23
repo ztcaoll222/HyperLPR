@@ -97,13 +97,13 @@ public:
             }
 
             if(plate.first == LETTER) {
-                decode += mappingTable[std::max_element(prob+41,prob+65)- prob];
-                confidence+=*std::max_element(prob+41,prob+65);
+                decode += mappingTable[std::max_element(prob + 41, prob + 65) - prob];
+                confidence += *std::max_element(prob + 41, prob + 65);
             }
 
             if(plate.first == LETTER_NUMS) {
-                decode += mappingTable[std::max_element(prob+31,prob+65)- prob];
-                confidence+=*std::max_element(prob+31,prob+65);
+                decode += mappingTable[std::max_element(prob + 31, prob + 65) - prob];
+                confidence += *std::max_element(prob + 31, prob + 65);
                 //                        std::cout<<*std::max_element(prob+31,prob+65)<<std::endl;
 
             }
@@ -111,7 +111,7 @@ public:
         }
         name = decode;
 
-        confidence/=7;
+        confidence /= 7;
 
         return decode;
     }

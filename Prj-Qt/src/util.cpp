@@ -85,4 +85,11 @@ void showMat(cv::Mat image, std::string name)
     cv::waitKey(0);
 }
 
+void drawRect(cv::Mat image,cv::Rect rect)
+{
+    cv::Point p1(rect.x,rect.y);
+    cv::Point p2(rect.x+rect.width,rect.y+rect.height);
+    cv::rectangle(image,p1,p2,cv::Scalar(0,255,0),1);
+}
+
 }

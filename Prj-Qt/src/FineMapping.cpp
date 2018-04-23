@@ -1,7 +1,6 @@
-//
-// Created by 庾金科 on 22/09/2017.
-//
-
+/*
+ * 用于去掉车牌上下左右的区域
+ */
 #include "include/FineMapping.h"
 #include "include/util.h"
 
@@ -11,40 +10,12 @@ const int FINEMAPPING_H = 50;
 const int FINEMAPPING_W = 120;
 const int PADDING_UP_DOWN = 30;
 
-void drawRect(cv::Mat image,cv::Rect rect)
+FineMapping::FineMapping(std::string prototxt,std::string caffemodel)
 {
-    cv::Point p1(rect.x,rect.y);
-    cv::Point p2(rect.x+rect.width,rect.y+rect.height);
-    cv::rectangle(image,p1,p2,cv::Scalar(0,255,0),1);
-}
-
-FineMapping::FineMapping(std::string prototxt,std::string caffemodel) {
     net = cv::dnn::readNetFromCaffe(prototxt, caffemodel);
-
 }
 
-cv::Mat FineMapping::FineMappingHorizon(cv::Mat FinedVertical,int leftPadding,int rightPadding)
-{
-
-    //        if(FinedVertical.channels()==1)
-    //            cv::cvtColor(FinedVertical,FinedVertical,cv::COLOR_GRAY2BGR);
-    cv::Mat inputBlob = cv::dnn::blobFromImage(FinedVertical, 1/255.0, cv::Size(66,16),
-                                               cv::Scalar(0,0,0),false);
-
-    net.setInput(inputBlob,"data");
-    cv::Mat prob = net.forward();
-    int front = static_cast<int>(prob.at<float>(0,0)*FinedVertical.cols);
-    int back = static_cast<int>(prob.at<float>(0,1)*FinedVertical.cols);
-    front -= leftPadding ;
-    if(front<0) front = 0;
-    back +=rightPadding;
-    if(back>FinedVertical.cols-1) back=FinedVertical.cols - 1;
-    cv::Mat cropped  = FinedVertical.colRange(front,back).clone();
-    return  cropped;
-
-
-}
-std::pair<int,int> FitLineRansac(std::vector<cv::Point> pts,int zeroadd = 0 )
+std::pair<int, int> FineMapping::FitLineRansac(std::vector<cv::Point> pts, int zeroadd)
 {
     std::pair<int,int> res;
     if(pts.size()>2)
@@ -66,7 +37,10 @@ std::pair<int,int> FitLineRansac(std::vector<cv::Point> pts,int zeroadd = 0 )
     return res;
 }
 
-cv::Mat FineMapping::FineMappingVertical(cv::Mat InputProposal, int sliceNum, int upper, int lower, int windows_size) {
+cv::Mat FineMapping::FineMappingVertical(cv::Mat InputProposal,
+                                         int sliceNum,
+                                         int upper, int lower,
+                                         int windows_size) {
 
     cv::Mat PreInputProposal;
     cv::Mat proposal;
@@ -81,7 +55,6 @@ cv::Mat FineMapping::FineMappingVertical(cv::Mat InputProposal, int sliceNum, in
     } else {
         PreInputProposal.copyTo(proposal);
     }
-//    util::showMat(proposal);
 
     float diff = static_cast<float>(upper - lower);
     diff /= static_cast<float>(sliceNum - 1);
@@ -117,7 +90,7 @@ cv::Mat FineMapping::FineMappingVertical(cv::Mat InputProposal, int sliceNum, in
         cv::bitwise_not(InputProposal, InputProposal);
         cv::Mat kernal = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(1,5));
         cv::Mat bak;
-        cv::resize(InputProposal,bak,cv::Size(FINEMAPPING_W,FINEMAPPING_H));
+        cv::resize(InputProposal,bak,cv::Size(FINEMAPPING_W, FINEMAPPING_H));
         cv::erode(bak,bak,kernal);
         if(InputProposal.channels() == 3)
             cv::cvtColor(bak,proposal,cv::COLOR_BGR2GRAY);
@@ -180,6 +153,21 @@ cv::Mat FineMapping::FineMappingVertical(cv::Mat InputProposal, int sliceNum, in
     return quad;
 }
 
+cv::Mat FineMapping::FineMappingHorizon(cv::Mat FinedVertical, int leftPadding, int rightPadding)
+{
+    cv::Mat inputBlob = cv::dnn::blobFromImage(FinedVertical, 1/255.0, cv::Size(66,16),
+                                               cv::Scalar(0,0,0), false);
+
+    net.setInput(inputBlob,"data");
+    cv::Mat prob = net.forward();
+    int front = static_cast<int>(prob.at<float>(0,0)*FinedVertical.cols);
+    int back = static_cast<int>(prob.at<float>(0,1)*FinedVertical.cols);
+    front -= leftPadding ;
+    if(front<0) front = 0;
+    back +=rightPadding;
+    if(back>FinedVertical.cols-1) back=FinedVertical.cols - 1;
+    cv::Mat cropped  = FinedVertical.colRange(front,back).clone();
+    return  cropped;
 }
 
-
+}

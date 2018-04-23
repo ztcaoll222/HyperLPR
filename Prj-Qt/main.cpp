@@ -9,9 +9,9 @@ int main(int argc, char *argv[])
                            "model/CharacterRecognization.prototxt","model/CharacterRecognization.caffemodel"
         );
   //定义模型文件
-//    cv::Mat image = cv::imread("test/timg.jpg");
+    cv::Mat image = cv::imread("test/timg.jpg");
 //    cv::Mat image = cv::imread("test/1.jpg");
-    cv::Mat image = cv::imread("test/10.jpg");
+//    cv::Mat image = cv::imread("test/10.jpg");
 
     std::vector<pr::PlateInfo> res = prc.RunPiplineAsImage(image);
   //使用端到端模型模型进行识别 识别结果将会保存在res里面

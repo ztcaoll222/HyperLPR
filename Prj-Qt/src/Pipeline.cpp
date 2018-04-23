@@ -26,19 +26,19 @@ std::vector<pr::PlateInfo> PipelinePR::RunPiplineAsImage(cv::Mat plateImage) {
 
     for (pr::PlateInfo plateinfo : plates) {
         cv::Mat image_finemapping = plateinfo.getPlateImage();
-//        util::showMat(image_finemapping);
+        util::showMat(image_finemapping);
 
         // 去掉车牌上下多余的像素
         image_finemapping = fineMapping->FineMappingVertical(image_finemapping);
-//        util::showMat(image_finemapping);
+        util::showMat(image_finemapping);
 
         // 扭正车牌
         image_finemapping = pr::fastdeskew(image_finemapping, 5);
-//        util::showMat(image_finemapping);
+        util::showMat(image_finemapping);
 
         // 去掉车牌左右多余的像素
         image_finemapping = fineMapping->FineMappingHorizon(image_finemapping, 2, 5);
-//        util::showMat(image_finemapping);
+        util::showMat(image_finemapping);
 
         // 调整大小
         cv::resize(image_finemapping, image_finemapping, cv::Size(136, 36));
