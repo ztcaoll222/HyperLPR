@@ -36,7 +36,7 @@ void PlateDetection::plateDetectionRough(cv::Mat InputImage, std::vector<pr::Pla
     for(cv::Rect plate:platesRegions) {
 //        util::showMat(processImage, plate);
 
-        // 适当扩大范围, 不清楚为什么要这么定数值
+        // 适当扩大范围
         int zeroadd_x = static_cast<int>(plate.width * 0.14);
         int zeroadd_y = static_cast<int>(plate.height * 0.6);
         int zeroadd_w  = static_cast<int>(plate.width * 0.28);
