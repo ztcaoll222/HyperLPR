@@ -10,130 +10,53 @@
 
 namespace pr {
 
-    typedef std::vector<cv::Mat> Character;
+typedef std::vector<cv::Mat> Character;
 
-    enum PlateColor {
-        BLUE, YELLOW, WHITE, GREEN, BLACK, UNKNOWN
-    };
-    enum CharType {
-        CHINESE, LETTER, LETTER_NUMS
-    };
+enum PlateColor { BLUE, YELLOW, WHITE, GREEN, BLACK,UNKNOWN};
+enum CharType {CHINESE,LETTER,LETTER_NUMS};
 
 
-    class PlateInfo {
-    public:
-        std::vector<std::pair<CharType, cv::Mat>> plateChars;
-        std::vector<std::pair<CharType, cv::Mat>> plateCoding;
+class PlateInfo {
 
-        float confidence = 0;
+private:
+    cv::Mat licensePlate;
+    cv::Rect ROI;
+    std::string name;
+    PlateColor Type;
 
+public:
+    std::vector<std::pair<CharType,cv::Mat>> plateChars;
+    std::vector<std::pair<CharType,cv::Mat>> plateCoding;
 
-        PlateInfo(const cv::Mat &plateData, std::string plateName, cv::Rect plateRect,
-                  PlateColor plateType) {
-            licensePlate = plateData;
-            name = plateName;
-            ROI = plateRect;
-            Type = plateType;
-        }
+    float confidence = 0;
 
-        PlateInfo(const cv::Mat &plateData, cv::Rect plateRect, PlateColor plateType) {
-            licensePlate = plateData;
-            ROI = plateRect;
-            Type = plateType;
-        }
+    PlateInfo(const cv::Mat &plateData, std::string plateName, cv::Rect plateRect, PlateColor plateType);
+    PlateInfo(const cv::Mat &plateData, cv::Rect plateRect, PlateColor plateType);
+    PlateInfo(const cv::Mat &plateData, cv::Rect plateRect);
+    PlateInfo();
 
-        PlateInfo(const cv::Mat &plateData, cv::Rect plateRect) {
-            licensePlate = plateData;
-            ROI = plateRect;
-        }
+    cv::Mat getPlateImage();
 
-        PlateInfo() {
+    void setPlateImage(cv::Mat plateImage);
 
-        }
+    cv::Rect getPlateRect();
 
-        cv::Mat getPlateImage() {
-            return licensePlate;
-        }
+    void setPlateRect(cv::Rect plateRect);
 
-        void setPlateImage(cv::Mat plateImage) {
-            licensePlate = plateImage;
-        }
+    cv::String getPlateName();
 
-        cv::Rect getPlateRect() {
-            return ROI;
-        }
+    void setPlateName(cv::String plateName);
 
-        void setPlateRect(cv::Rect plateRect) {
-            ROI = plateRect;
-        }
+    int getPlateType();
 
-        cv::String getPlateName() {
-            return name;
+    void appendPlateChar(const std::pair<CharType,cv::Mat> &plateChar);
 
-        }
+    void appendPlateCoding(const std::pair<CharType,cv::Mat> &charProb);
 
-        void setPlateName(cv::String plateName) {
-            name = plateName;
-        }
+    std::string decodePlateNormal(std::vector<std::string> mappingTable);
 
-        int getPlateType() {
-            return Type;
-        }
+};
 
-        void appendPlateChar(const std::pair<CharType, cv::Mat> &plateChar) {
-            plateChars.push_back(plateChar);
-        }
-
-        void appendPlateCoding(const std::pair<CharType, cv::Mat> &charProb) {
-            plateCoding.push_back(charProb);
-        }
-
-        //        cv::Mat getPlateChars(int id) {
-        //            if(id<PlateChars.size())
-        //                return PlateChars[id];
-        //        }
-        std::string decodePlateNormal(std::vector<std::string> mappingTable) {
-            std::string decode;
-            for (auto plate:plateCoding) {
-                float *prob = (float *) plate.second.data;
-                if (plate.first == CHINESE) {
-
-                    decode += mappingTable[std::max_element(prob, prob + 31) - prob];
-                    confidence += *std::max_element(prob, prob + 31);
-
-
-                    //                        std::cout<<*std::max_element(prob,prob+31)<<std::endl;
-
-                }
-
-                if (plate.first == LETTER) {
-                    decode += mappingTable[std::max_element(prob + 41, prob + 65) - prob];
-                    confidence += *std::max_element(prob + 41, prob + 65);
-                }
-
-                if (plate.first == LETTER_NUMS) {
-                    decode += mappingTable[std::max_element(prob + 31, prob + 65) - prob];
-                    confidence += *std::max_element(prob + 31, prob + 65);
-                    //                        std::cout<<*std::max_element(prob+31,prob+65)<<std::endl;
-
-                }
-
-            }
-            name = decode;
-
-            confidence /= 7;
-
-            return decode;
-        }
-
-
-    private:
-        cv::Mat licensePlate;
-        cv::Rect ROI;
-        std::string name;
-        PlateColor Type;
-    };
 }
-
 
 #endif //SWIFTPR_PLATEINFO_H

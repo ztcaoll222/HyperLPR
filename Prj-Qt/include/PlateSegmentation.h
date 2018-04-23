@@ -18,7 +18,7 @@ namespace pr{
         const int PLATE_NORMAL_GREEN = 7;
         const int DEFAULT_WIDTH = 20;
         PlateSegmentation(std::string phototxt,std::string caffemodel);
-        PlateSegmentation(){}
+        PlateSegmentation();
         void segmentPlatePipline(PlateInfo &plateInfo,int stride,std::vector<cv::Rect> &Char_rects);
 
         void segmentPlateBySlidingWindows(cv::Mat &plateImage,int windowsWidth,int stride,cv::Mat &respones);
@@ -28,9 +28,6 @@ namespace pr{
         cv::Mat classifyResponse(const cv::Mat &cropped);
     private:
         cv::dnn::Net net;
-
-
-//        RefineRegion()
 
     };
 

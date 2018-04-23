@@ -13,6 +13,11 @@ namespace pr {
         net = cv::dnn::readNetFromCaffe(prototxt, caffemodel);
     }
 
+    PlateSegmentation::PlateSegmentation()
+    {
+
+    }
+
     cv::Mat PlateSegmentation::classifyResponse(const cv::Mat &cropped) {
         cv::Mat inputBlob = cv::dnn::blobFromImage(cropped, 1 / 255.0, cv::Size(22, 22),
                                                    cv::Scalar(0, 0, 0), false);

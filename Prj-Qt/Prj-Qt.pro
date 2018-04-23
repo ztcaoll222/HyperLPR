@@ -22,7 +22,9 @@ SOURCES += main.cpp \
     src/PlateDetection.cpp \
     src/PlateSegmentation.cpp \
     src/Recognizer.cpp \
-    src/util.cpp
+    src/util.cpp \
+    src/niblackthreshold.cpp \
+    src/PlateInfo.cpp
 
 HEADERS += \
     include/CNNRecognizer.h \
