@@ -36,7 +36,8 @@ HEADERS += \
     include/PlateInfo.h \
     include/PlateSegmentation.h \
     include/Recognizer.h \
-    include/util.h
+    include/util.h \
+    include/base.h
 
 win32 {
     LIBS += ..\libs\win\libopencv_*.a

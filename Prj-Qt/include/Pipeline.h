@@ -35,5 +35,6 @@ public:
     std::vector<PlateInfo> RunPiplineAsImage(cv::Mat plateImage);
 };
 
-}
+} // namespace pr
+
 #endif //SWIFTPR_PIPLINE_H

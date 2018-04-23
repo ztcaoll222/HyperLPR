@@ -4,8 +4,7 @@
 #ifndef SWIFTPR_PLATEINFO_H
 #define SWIFTPR_PLATEINFO_H
 
-#include <opencv2/opencv.hpp>
-
+#include "base.h"
 #include "util.h"
 
 namespace pr {
@@ -14,7 +13,6 @@ typedef std::vector<cv::Mat> Character;
 
 enum PlateColor { BLUE, YELLOW, WHITE, GREEN, BLACK,UNKNOWN};
 enum CharType {CHINESE,LETTER,LETTER_NUMS};
-
 
 class PlateInfo {
 
@@ -57,6 +55,6 @@ public:
 
 };
 
-}
+} // namespace pr
 
 #endif //SWIFTPR_PLATEINFO_H

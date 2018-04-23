@@ -4,19 +4,21 @@
 #ifndef SWIFTPR_RECOGNIZER_H
 #define SWIFTPR_RECOGNIZER_H
 
-#include "opencv2/dnn.hpp"
-
+#include "base.h"
 #include "PlateInfo.h"
 #include "util.h"
 
-namespace pr{
+namespace pr {
+
 typedef cv::Mat label;
-class GeneralRecognizer{
+
+class GeneralRecognizer {
 public:
     virtual label recognizeCharacter(cv::Mat character) = 0;
-    void SegmentBasedSequenceRecognition(PlateInfo &plateinfo);
 
+    void SegmentBasedSequenceRecognition(PlateInfo &plateinfo);
 };
 
-}
+} // namespace pr
+
 #endif //SWIFTPR_RECOGNIZER_H

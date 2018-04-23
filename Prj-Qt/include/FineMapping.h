@@ -4,10 +4,7 @@
 #ifndef SWIFTPR_FINEMAPPING_H
 #define SWIFTPR_FINEMAPPING_H
 
-#include <opencv2/opencv.hpp>
-#include <opencv2/dnn.hpp>
-#include <string>
-
+#include "base.h"
 #include "util.h"
 
 namespace pr {
@@ -17,6 +14,10 @@ namespace pr {
         cv::dnn::Net net;
 
     public:
+        const int FINEMAPPING_H = 50;
+        const int FINEMAPPING_W = 120;
+        const int PADDING_UP_DOWN = 30;
+
         FineMapping();
 
         FineMapping(std::string prototxt, std::string caffemodel);
@@ -55,5 +56,6 @@ namespace pr {
 
     };
 
-}
+} // namespace pr
+
 #endif //SWIFTPR_FINEMAPPING_H

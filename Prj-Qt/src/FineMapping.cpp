@@ -5,10 +5,6 @@
 
 namespace pr {
 
-    const int FINEMAPPING_H = 50;
-    const int FINEMAPPING_W = 120;
-    const int PADDING_UP_DOWN = 30;
-
     FineMapping::FineMapping(std::string prototxt, std::string caffemodel) {
         net = cv::dnn::readNetFromCaffe(prototxt, caffemodel);
     }

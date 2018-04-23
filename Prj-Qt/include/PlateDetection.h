@@ -5,9 +5,7 @@
 #ifndef SWIFTPR_PLATEDETECTION_H
 #define SWIFTPR_PLATEDETECTION_H
 
-#include <opencv2/opencv.hpp>
-#include <vector>
-
+#include "base.h"
 #include "PlateInfo.h"
 #include "util.h"
 
@@ -36,6 +34,6 @@ public:
     void plateDetectionRough(cv::Mat InputImage,std::vector<pr::PlateInfo> &plateInfos,int min_w=36,int max_w=800);
 };
 
-}// namespace pr
+} // namespace pr
 
 #endif //SWIFTPR_PLATEDETECTION_H

@@ -4,8 +4,7 @@
 #ifndef SWIFTPR_NIBLACKTHRESHOLD_H
 #define SWIFTPR_NIBLACKTHRESHOLD_H
 
-#include <opencv2/opencv.hpp>
-
+#include "base.h"
 #include "util.h"
 
 namespace pr {
@@ -20,6 +19,6 @@ enum LocalBinarizationMethods {
 void niBlackThreshold(cv::InputArray _src, cv::OutputArray _dst, double maxValue,
                        int type, int blockSize, double k, int binarizationMethod);
 
-}
+} // namespace pr
 
 #endif //SWIFTPR_NIBLACKTHRESHOLD_H

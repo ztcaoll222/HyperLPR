@@ -5,6 +5,7 @@
 #include "include/CNNRecognizer.h"
 
 namespace pr {
+
     CNNRecognizer::CNNRecognizer(std::string prototxt, std::string caffemodel) {
         net = cv::dnn::readNetFromCaffe(prototxt, caffemodel);
     }
