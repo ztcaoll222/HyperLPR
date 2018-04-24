@@ -85,4 +85,4 @@ namespace util {
         cv::rectangle(image, p1, p2, cv::Scalar(0, 255, 0), 1);
     }
 
-}
+} // namespace util

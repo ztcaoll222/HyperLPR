@@ -5,16 +5,13 @@
 #include "include/PlateSegmentation.h"
 #include "include/niBlackThreshold.h"
 
-
-//#define DEBUG
 namespace pr {
 
     PlateSegmentation::PlateSegmentation(std::string prototxt, std::string caffemodel) {
         net = cv::dnn::readNetFromCaffe(prototxt, caffemodel);
     }
 
-    PlateSegmentation::PlateSegmentation()
-    {
+    PlateSegmentation::PlateSegmentation() {
 
     }
 
@@ -67,13 +64,12 @@ namespace pr {
 
     }
 
-
     void PlateSegmentation::refineRegion(cv::Mat &plateImage, const std::vector<int> &candidatePts,
                                          const int padding, std::vector<cv::Rect> &rects) {
         int w = candidatePts[5] - candidatePts[4];
         int cols = plateImage.cols;
         int rows = plateImage.rows;
-        for (int i = 0; i < candidatePts.size(); i++) {
+        for (size_t i = 0; i < candidatePts.size(); i++) {
             int left = 0;
             int right = 0;
 
@@ -94,7 +90,6 @@ namespace pr {
             if (i >= 1) {
 
                 cv::Mat roi_thres;
-                //                cv::threshold(roiImage,roi_thres,0,255,cv::THRESH_OTSU|cv::THRESH_BINARY);
 
                 niBlackThreshold(roiImage, roi_thres, 255, cv::THRESH_BINARY, 15, 0.3,
                                  BINARIZATION_NIBLACK);
@@ -106,7 +101,6 @@ namespace pr {
                 cv::Rect final_bdbox;
                 cv::Point final_center;
                 int final_dist = INT_MAX;
-
 
                 for (auto contour:contours) {
                     cv::Rect bdbox = cv::boundingRect(contour);
@@ -121,36 +115,24 @@ namespace pr {
 
                 //rebuild box
                 if (final_bdbox.height / static_cast<float>(final_bdbox.width) > 3.5 &&
-                    final_bdbox.width * final_bdbox.height < 10)
+                        final_bdbox.width * final_bdbox.height < 10) {
                     final_bdbox = boxFromCenter(final_center, 8, 8, (rows >> 1) - 3,
                                                 (rows >> 1) - 2, roiImage.size());
+                }
                 else {
-                    if (i == candidatePts.size() - 1)
+                    if (i == candidatePts.size() - 1) {
                         final_bdbox = boxPadding(final_bdbox, padding / 2, padding, padding / 2,
                                                  padding / 2, roiImage.size());
-                    else
+                    }
+                    else {
                         final_bdbox = boxPadding(final_bdbox, padding, padding, padding, padding,
                                                  roiImage.size());
-
-
-                    //                    std::cout<<final_bdbox<<std::endl;
-                    //                    std::cout<<roiImage.size()<<std::endl;
-#ifdef DEBUG
-                    cv::imshow("char_thres",roi_thres);
-
-                    cv::imshow("char",roiImage(final_bdbox));
-                    cv::waitKey(0);
-#endif
-
-
+                    }
                 }
-
 
                 final_bdbox.x += left;
 
                 rects.push_back(final_bdbox);
-                //
-
             } else {
                 rects.push_back(roi);
             }
@@ -160,13 +142,10 @@ namespace pr {
     void avgfilter(float *angle_list, int size, int windowsSize) {
         float *filterd = new float[size];
         for (int i = 0; i < size; i++) filterd[i] = angle_list[i];
-        //        memcpy(filterd,angle_list,size);
 
         cv::Mat kernal_gaussian = cv::getGaussianKernel(windowsSize, 3, CV_32F);
         float *kernal = (float *) kernal_gaussian.data;
-        //        kernal+=windowsSize;
         int r = windowsSize / 2;
-
 
         for (int i = 0; i < size; i++) {
             float avg = 0.00f;
@@ -174,9 +153,7 @@ namespace pr {
                 if (i + j - r > 0 && i + j + r < size - 1)
                     avg += filterd[i + j - r] * kernal[j];
             }
-            //            avg = avg / windowsSize;
             angle_list[i] = avg;
-
         }
 
         delete filterd;
@@ -193,7 +170,6 @@ namespace pr {
         int rows = respones.rows;
         int cols = respones.cols;
 
-
         float *data = (float *) respones.data;
         float *engNum_prob = data;
         float *false_prob = data + cols;
@@ -201,20 +177,12 @@ namespace pr {
 
         avgfilter(engNum_prob, cols, 5);
         avgfilter(false_prob, cols, 5);
-        //        avgfilter(ch_prob,cols,5);
-        std::vector<int> candidate_pts(7);
-#ifdef DEBUG
-        drawHist(engNum_prob,cols,"engNum_prob");
-        drawHist(false_prob,cols,"false_prob");
-        drawHist(ch_prob,cols,"ch_prob");
-        cv::waitKey(0);
-#endif
+        std::vector<int> candidate_pts = {0, 0, 0, 0, 0, 0, 0};
 
-
-        int cp_list[7];
+        int cp_list[7] = {0, 0, 0, 0, 0, 0, 0};
         float loss_selected = -1;
 
-        for (int start = 0; start < 20; start += 2)
+        for (int start = 0; start < 20; start += 2) {
             for (int width = windowsWidth - 5; width < windowsWidth + 5; width++) {
                 for (int interval = windowsWidth / 2; interval < windowsWidth; interval++) {
                     int cp1_ch = start;
@@ -240,11 +208,6 @@ namespace pr {
                                  engNum_prob[cp5_p3] + engNum_prob[cp6_p4] + engNum_prob[cp7_p5]
                                  + (false_prob[md2] + false_prob[md3] + false_prob[md4] +
                                     false_prob[md5] + false_prob[md5] + false_prob[md6]);
-                    //                    float loss = ch_prob[cp1_ch]*3 -(false_prob[cp3_p1]+false_prob[cp4_p2]+false_prob[cp5_p3]+false_prob[cp6_p4]+false_prob[cp7_p5]);
-
-
-
-
                     if (loss > loss_selected) {
                         loss_selected = loss;
                         cp_list[0] = cp1_ch;
@@ -257,6 +220,7 @@ namespace pr {
                     }
                 }
             }
+        }
         candidate_pts[0] = cp_list[0];
         candidate_pts[1] = cp_list[1];
         candidate_pts[2] = cp_list[2];
@@ -267,7 +231,6 @@ namespace pr {
 
         candidatePts.first = loss_selected;
         candidatePts.second = candidate_pts;
-
     }
 
 /**
@@ -319,7 +282,7 @@ namespace pr {
 
         refineRegion(plateImageGray, sections.second, 5, Char_rects);
 
-        for (int i = 0; i < sections.second.size(); i++) {
+        for (size_t i = 0; i < sections.second.size(); i++) {
             std::cout << sections.second[i] << " ";
             cv::line(plateImageGray, cv::Point(sections.second[i], 0),
                      cv::Point(sections.second[i], 36), cv::Scalar(255, 255, 255), 1); //DEBUG
@@ -333,7 +296,7 @@ namespace pr {
  */
     void PlateSegmentation::ExtractRegions(PlateInfo &plateInfo, std::vector<cv::Rect> &rects) {
         cv::Mat plateImage = plateInfo.getPlateImage();
-        for (int i = 0; i < rects.size(); i++) {
+        for (size_t i = 0; i < rects.size(); i++) {
             cv::Mat charImage;
             plateImage(rects[i]).copyTo(charImage);
             if (charImage.channels()) {
@@ -357,4 +320,4 @@ namespace pr {
 
     }
 
-}//namespace pr
+} // namespace pr

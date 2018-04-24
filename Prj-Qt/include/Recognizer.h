@@ -10,14 +10,17 @@
 
 namespace pr {
 
-typedef cv::Mat label;
+    typedef cv::Mat label;
 
-class GeneralRecognizer {
-public:
-    virtual label recognizeCharacter(cv::Mat character) = 0;
+    class GeneralRecognizer {
+    public:
+        GeneralRecognizer();
+        virtual ~GeneralRecognizer();
 
-    void SegmentBasedSequenceRecognition(PlateInfo &plateinfo);
-};
+        virtual label recognizeCharacter(cv::Mat character) = 0;
+
+        void SegmentBasedSequenceRecognition(PlateInfo &plateinfo);
+    };
 
 } // namespace pr
 

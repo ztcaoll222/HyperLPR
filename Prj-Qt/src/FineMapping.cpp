@@ -188,4 +188,4 @@ namespace pr {
         return cropped;
     }
 
-}
+} // namespace pr

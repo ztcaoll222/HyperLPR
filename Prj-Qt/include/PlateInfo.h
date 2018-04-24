@@ -9,51 +9,58 @@
 
 namespace pr {
 
-typedef std::vector<cv::Mat> Character;
+    typedef std::vector<cv::Mat> Character;
 
-enum PlateColor { BLUE, YELLOW, WHITE, GREEN, BLACK,UNKNOWN};
-enum CharType {CHINESE,LETTER,LETTER_NUMS};
+    enum PlateColor {
+        BLUE, YELLOW, WHITE, GREEN, BLACK, UNKNOWN
+    };
+    enum CharType {
+        CHINESE, LETTER, LETTER_NUMS
+    };
 
-class PlateInfo {
+    class PlateInfo {
+    private:
+        cv::Mat licensePlate;
+        cv::Rect ROI;
+        std::string name;
+        PlateColor Type;
 
-private:
-    cv::Mat licensePlate;
-    cv::Rect ROI;
-    std::string name;
-    PlateColor Type;
+    public:
+        std::vector<std::pair<CharType, cv::Mat>> plateChars;
+        std::vector<std::pair<CharType, cv::Mat>> plateCoding;
 
-public:
-    std::vector<std::pair<CharType,cv::Mat>> plateChars;
-    std::vector<std::pair<CharType,cv::Mat>> plateCoding;
+        float confidence = 0;
 
-    float confidence = 0;
+        PlateInfo(const cv::Mat &plateData, std::string plateName, cv::Rect plateRect,
+                  PlateColor plateType);
 
-    PlateInfo(const cv::Mat &plateData, std::string plateName, cv::Rect plateRect, PlateColor plateType);
-    PlateInfo(const cv::Mat &plateData, cv::Rect plateRect, PlateColor plateType);
-    PlateInfo(const cv::Mat &plateData, cv::Rect plateRect);
-    PlateInfo();
+        PlateInfo(const cv::Mat &plateData, cv::Rect plateRect, PlateColor plateType);
 
-    cv::Mat getPlateImage();
+        PlateInfo(const cv::Mat &plateData, cv::Rect plateRect);
 
-    void setPlateImage(cv::Mat plateImage);
+        PlateInfo();
 
-    cv::Rect getPlateRect();
+        cv::Mat getPlateImage();
 
-    void setPlateRect(cv::Rect plateRect);
+        void setPlateImage(cv::Mat plateImage);
 
-    cv::String getPlateName();
+        cv::Rect getPlateRect();
 
-    void setPlateName(cv::String plateName);
+        void setPlateRect(cv::Rect plateRect);
 
-    int getPlateType();
+        cv::String getPlateName();
 
-    void appendPlateChar(const std::pair<CharType,cv::Mat> &plateChar);
+        void setPlateName(cv::String plateName);
 
-    void appendPlateCoding(const std::pair<CharType,cv::Mat> &charProb);
+        int getPlateType();
 
-    std::string decodePlateNormal(std::vector<std::string> mappingTable);
+        void appendPlateChar(const std::pair<CharType, cv::Mat> &plateChar);
 
-};
+        void appendPlateCoding(const std::pair<CharType, cv::Mat> &charProb);
+
+        std::string decodePlateNormal(std::vector<std::string> mappingTable);
+
+    };
 
 } // namespace pr
 

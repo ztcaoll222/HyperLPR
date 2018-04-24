@@ -10,6 +10,10 @@ namespace pr {
         net = cv::dnn::readNetFromCaffe(prototxt, caffemodel);
     }
 
+    CNNRecognizer::~CNNRecognizer() {
+
+    }
+
     label CNNRecognizer::recognizeCharacter(cv::Mat charImage) {
         if (charImage.channels() == 3)
             cv::cvtColor(charImage, charImage, cv::COLOR_BGR2GRAY);
@@ -19,4 +23,5 @@ namespace pr {
         net.setInput(inputBlob, "data");
         return net.forward();
     }
-}
+
+} // namespace pr

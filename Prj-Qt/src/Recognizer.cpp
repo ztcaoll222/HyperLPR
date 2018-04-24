@@ -5,11 +5,21 @@
 
 namespace pr {
 
+
+GeneralRecognizer::GeneralRecognizer() {
+
+}
+
+GeneralRecognizer::~GeneralRecognizer()
+{
+
+}
+
 /**
  * @brief GeneralRecognizer::SegmentBasedSequenceRecognition 基于分段的序列识别
  * @param plateinfo
  */
-    void GeneralRecognizer::SegmentBasedSequenceRecognition(PlateInfo &plateinfo) {
+void GeneralRecognizer::SegmentBasedSequenceRecognition(PlateInfo &plateinfo) {
         for (auto char_instance:plateinfo.plateChars) {
             std::pair<CharType, cv::Mat> res;
             cv::Mat code_table = recognizeCharacter(char_instance.second);
@@ -20,4 +30,4 @@ namespace pr {
         }
     }
 
-}
+} // namespace pr
